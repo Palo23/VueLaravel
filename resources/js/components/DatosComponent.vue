@@ -1,25 +1,46 @@
-<template>               
-                                <tr>
-                                    <th>
-                                    <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.name">
-                                    <p v-else>{{usuario.name}}</p>
-                                    </th>
-                                    <td>
-                                        <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.email">
-                                        <p v-else>{{usuario.email}}</p>
+<template>
+                                <div>
+                                    <tr>
+                                        <th>
+                                        <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.name">
+                                        <p v-else>{{usuario.name}}</p>
+                                        </th>
+                                        <td>
+                                            <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.email">
+                                            <p v-else>{{usuario.email}}</p>
+                                            </td>
+                                        <td>{{usuario.roles[0].nombre}}</td>
+                                        <td>
+                                            <div v-if="modoEdicion">
+                                                <button class="btn btn-success" type="submit" @click="actualizarUsuario">Guardar Cambios</button>
+                                                <button class="btn btn-danger" type="submit" @click="cancelar">Cancelar</button>
+                                            </div>
+                                            <div v-else>
+                                                <button class="btn btn-warning" type="submit" @click="editar">Editar</button>
+                                                <button class="btn btn-danger" type="submit" @click="modalDelUser">Eliminar</button>
+                                            </div>
                                         </td>
-                                    <td>{{usuario.roles[0].nombre}}</td>
-                                    <td>
-                                        <div v-if="modoEdicion">
-                                            <button class="btn btn-success" type="submit" @click="actualizarUsuario">Guardar Cambios</button>
-                                            <button class="btn btn-danger" type="submit" @click="cancelar">Cancelar</button>
-                                        </div>
-                                        <div v-else>
-                                            <button class="btn btn-warning" type="submit" @click="editar">Editar</button>
-                                            <button class="btn btn-danger" type="submit" @click="eliminarUsuario">Eliminar</button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    </tr>
+
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Do you want to delete the user with ID: {{toDeleteUserId}}? //TODO: check why this prop doesn't update
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" @click="delUser">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+                                </div>
 </template>
 
 <script>
@@ -29,7 +50,8 @@
             return {
                 prop: {id: '', name: '', email: '', rol: ''},
                 modoEdicion: false,
-                modoEliminar: false
+                modoEliminar: false,
+                toDeleteUserId: ''
             }
         },
         methods: {
@@ -58,11 +80,17 @@
                 };
                 this.$emit('modal', params);
             },
-            eliminarUsuario(){
+            modalDelUser(){
+                this.toDeleteUserId = this.usuario.id;
+                console.log('toDeleteUserId', this.toDeleteUserId);
+                $('#exampleModal').modal({});
+            },
+            delUser() {
                 axios.delete(`usuarios/${this.usuario.id}`).then((res) => {
+                    $('#exampleModal').modal('hide');
                     this.$emit('borrar');
                 });
-            },
+            }
         },
     }
 </script>

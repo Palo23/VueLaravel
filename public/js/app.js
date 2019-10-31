@@ -1989,7 +1989,8 @@ __webpack_require__.r(__webpack_exports__);
         return this.usuarios;
       } else {
         return this.usuarios.filter(function (usuario) {
-          return usuario.name.includes(_this2.name);
+          return usuario.name.toLowerCase().includes(_this2.name.toLowerCase()) || usuario.email.toLowerCase().includes(_this2.name.toLowerCase());
+          ;
         });
       }
     }

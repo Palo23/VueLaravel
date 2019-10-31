@@ -11,6 +11,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,6 +23,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+        <?php
+        use App\Archivos;
+        ?>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -51,6 +56,17 @@
                                 </li>
                             @endif
                         @else
+                        <?php
+
+                                $archivo = Auth::user()->ID_archivo;
+                                $foto = Archivos::find($archivo);
+
+                        ?>
+
+                        <a class="navbar-brand" href="{{ route('perfil', ['id' => Auth::user()->id]) }}">
+                            <img src="{{ $foto->ruta }}" width="25" height="25" alt="">
+                        </a>        
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

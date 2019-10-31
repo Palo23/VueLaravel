@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('easy-autocomplete/dist/jquery.easy-autocomplete')
 
 window.Vue = require('vue');
 
@@ -19,7 +20,9 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('tabla-componente', require('./components/TablaComponent.vue').default);
+Vue.component('datos-componente', require('./components/DatosComponent.vue').default);
+Vue.component('user-componente', require('./components/UserComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

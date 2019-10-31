@@ -30,4 +30,10 @@ Route::get('/perfil/{id}', 'PerfilController@mostrarPerfil')->name('perfil');
 
 Route::post('update_foto', 'PerfilController@actualizarFoto')->name('actualizarFoto');
 
+Route::apiResource('usuarios', 'UsuariosController');
+
+Route::get('/users', 'HomeController@usuario')->name('usuario.tabla');
+
+Route::get('/search', 'HomeController@search')->name('home.search');
+
 //Route::resource('/usuario', 'RolUserController@update')->name('roluser');

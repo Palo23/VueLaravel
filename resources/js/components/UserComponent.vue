@@ -10,7 +10,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(usuario, index) in usuarios" :key="usuario.id" :usuario="usuario">
+                                <tr v-for="usuario in usuarios" :key="usuario.id">
                                     <th>
                                     <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.name">
                                     <p v-else>{{usuario.name}}</p>

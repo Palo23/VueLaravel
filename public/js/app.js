@@ -1951,17 +1951,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['modal'],
   data: function data() {
     return {
-      usuarios: [],
-      modalShow: false
+      usuarios: null,
+      modalShow: false,
+      name: ''
     };
   },
   mounted: function mounted() {
     var _this = this;
 
+    this.name = '';
     axios.get('/usuarios').then(function (res) {
       _this.usuarios = res.data;
     });
@@ -1973,6 +1979,19 @@ __webpack_require__.r(__webpack_exports__);
     },
     borrarUsuario: function borrarUsuario(index, usuario) {
       this.usuarios.splice(index, 1);
+    }
+  },
+  computed: {
+    searchUser: function searchUser() {
+      var _this2 = this;
+
+      if (this.name === '') {
+        return this.usuarios;
+      } else {
+        return this.usuarios.filter(function (usuario) {
+          return usuario.name.includes(_this2.name);
+        });
+      }
     }
   }
 });
@@ -39164,12 +39183,46 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card-body table-responsive-sm" }, [
+    _c(
+      "div",
+      {
+        staticClass: "col-sm-12 col-md-4 hidden-sm hidden-xs",
+        staticStyle: { "border-radius": "15px", "padding-bottom": "35px" },
+        attrs: { id: "busqueda" }
+      },
+      [
+        _c("h2", [_vm._v("Buscar por nombre")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text", placeholder: "Buscar" },
+          domProps: { value: _vm.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            }
+          }
+        })
+      ]
+    ),
+    _vm._v(" "),
     _c("table", { staticClass: "table" }, [
       _vm._m(0),
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.usuarios, function(usuario, index) {
+        _vm._l(_vm.searchUser, function(usuario, index) {
           return _c("datos-componente", {
             key: usuario.id,
             attrs: { usuario: usuario },
@@ -39239,8 +39292,8 @@ var render = function() {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.usuarios, function(usuario, index) {
-          return _c("tr", { key: usuario.id, attrs: { usuario: usuario } }, [
+        _vm._l(_vm.usuarios, function(usuario) {
+          return _c("tr", { key: usuario.id }, [
             _c("th", [
               _vm.modoEdicion
                 ? _c("input", {

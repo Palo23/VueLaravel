@@ -61,7 +61,8 @@ export default {
 			}else{
 				return this.usuarios.filter((usuario)=>{
                 return usuario.name.toLowerCase().includes(this.name.toLowerCase()) ||
-                usuario.email.toLowerCase().includes(this.name.toLowerCase());;
+                usuario.email.toLowerCase().includes(this.name.toLowerCase()) ||
+                usuario.roles[0].nombre.toLowerCase().includes(this.name.toLowerCase());
 				});
 			}
 		}

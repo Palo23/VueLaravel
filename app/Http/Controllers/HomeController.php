@@ -34,7 +34,7 @@ class HomeController extends Controller
             return view('inicio.agregarCurso');
         }else if(Auth::user()->hasRole('Alumno')) {
             $cursos = Cursos::all();
-            return view('inicio.cursosPage', compact('cursos'));
+            return view('inicio.inscripcion');
         }
      //  return view('home');
     }

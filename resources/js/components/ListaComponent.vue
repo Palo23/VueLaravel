@@ -3,14 +3,14 @@
                                     <table style="table-layout: fixed; width: 400%;" class="table">
                                     <tr>
                                         <th>
-                                        <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.name">
-                                        <p v-else>{{usuario.name}}</p>
+                                        <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="curso.nombre">
+                                        <p v-else>{{curso.nombre}}</p>
                                         </th>
                                         <td>
-                                            <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.email">
-                                            <p v-else>{{usuario.email}}</p>
+                                            <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="curso.description">
+                                            <p v-else>{{curso.description}}</p>
                                             </td>
-                                        <td>{{usuario.roles[0].nombre}}</td>
+                                        <td>{{curso.id_user}}</td>
                                         <td>
                                             <div v-if="modoEdicion">
                                                 <button class="btn btn-success" type="submit" @click="actualizarUsuario">Guardar Cambios</button>
@@ -23,34 +23,14 @@
                                         </td>
                                     </tr>
                                 </table>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Eliminar usuario</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ¿Seguro que deseás eliminar?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="delUser">Confirm</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
                                 </div>
 </template>
-
 <script>
-    export default {
-        props: ['usuario'],
+export default {
+        props: ['curso'],
         data() {
             return {
-                prop: {id: '', name: '', email: '', rol: ''},
+                prop: {id: '', nombre: '', description: '', foto: ''},
                 modoEdicion: false,
                 modoEliminar: false,
                 toDeleteUserId: ''

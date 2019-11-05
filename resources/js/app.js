@@ -23,6 +23,11 @@ window.Vue = require('vue');
 Vue.component('tabla-componente', require('./components/TablaComponent.vue').default);
 Vue.component('datos-componente', require('./components/DatosComponent.vue').default);
 Vue.component('user-componente', require('./components/UserComponent.vue').default);
+Vue.component('cursocrear-componente', require('./components/CreacionComponent.vue').default);
+Vue.component('lista-componente', require('./components/ListaComponent.vue').default);
+Vue.component('modal-componente', require('./components/ModalComponent.vue').default);
+Vue.component('todos-componente', require('./components/TodosComponent.vue').default);
+Vue.component('curso-componente', require('./components/CursoComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

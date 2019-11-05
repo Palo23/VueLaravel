@@ -32,7 +32,13 @@ Route::post('update_foto', 'PerfilController@actualizarFoto')->name('actualizarF
 
 Route::apiResource('usuarios', 'UsuariosController');
 
+Route::apiResource('cursosCreacion', 'CursoProfesorController');
+
+Route::apiResource('inscripcion', 'InscripcionController');
+
 Route::get('/users', 'HomeController@usuario')->name('usuario.tabla');
+
+Route::post('inscribir', 'HomeController@inscribirse')->name('inscribirse');
 
 Route::get('/search', 'HomeController@search')->name('home.search');
 

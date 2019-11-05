@@ -4,6 +4,8 @@
 namespace App\Http\Controllers;
 
 use App\Roles;
+use App\Cursos;
+use App\Archivos;
 use \Auth;
 use Illuminate\Http\Request;
 
@@ -31,13 +33,23 @@ class HomeController extends Controller
         } else if(Auth::user()->hasRole('Profesor')) {
             return view('inicio.agregarCurso');
         }else if(Auth::user()->hasRole('Alumno')) {
-            return view('inicio.cursosPage');
+            $cursos = Cursos::all();
+            return view('inicio.cursosPage', compact('cursos'));
         }
      //  return view('home');
     }
 
     public function usuario(){
         return view('user.usuarios');
+    }
+
+    public function inscribirse(Request $request){
+        //$idUsuario = Auth::user()->id;
+        //$id = $request->id;
+        //$usuario = User::find($idUsuario);
+        //$curso = Cursos::find($id);
+        //$curso->users()->attach($idUsuario);
+        return view('cursos.vistaGeneral', compact('$curso'));
     }
 
     public function search(Request $request)

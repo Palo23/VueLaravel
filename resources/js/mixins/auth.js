@@ -8,5 +8,5 @@ module.exports ={
     isAuthenticated(){
         return !! user.content
     }
-}
+},
 };

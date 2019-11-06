@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Cursos;
-use App\User;
-use App\Archivos;
-use \Auth;
+use Illuminate\Http\Request;
 
-class InscripcionController extends Controller
+class GeneralController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +20,17 @@ class InscripcionController extends Controller
 
     public function index()
     {
-        return Cursos::with('archivo', 'users')->get();
+        
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -34,10 +41,7 @@ class InscripcionController extends Controller
      */
     public function store(Request $request)
     {
-        $idUsuario = Auth::user()->id;
-        $usuario = User::find($idUsuario);
-        $idCurso = $request->id;
-        $usuario->cursos()->attach($idCurso);
+        //
     }
 
     /**
@@ -47,6 +51,19 @@ class InscripcionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+        $curso = Cursos::find($id);
+
+        return view('cursos.vistaGeneral', compact('curso'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
         //
     }
@@ -60,7 +77,7 @@ class InscripcionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**

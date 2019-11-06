@@ -1963,6 +1963,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['curso'],
   data: function data() {
@@ -1974,8 +1986,38 @@ __webpack_require__.r(__webpack_exports__);
         password: ''
       },
       modoEdicion: false,
-      password: ''
+      password: '',
+      id: '',
+      inscrito: false
     };
+  },
+  mounted: function mounted() {
+    var tamano = '';
+    var usuarioID = '';
+    usuarioID = this.user.id;
+    tamano = this.curso.users.length;
+
+    for (var i = 0; i < tamano; i++) {
+      if (usuarioID === this.curso.users[i].id) {
+        this.inscrito = true;
+      } else {
+        this.inscrito = false;
+      }
+    }
+  },
+  updated: function updated() {
+    var tamano = '';
+    var usuarioID = '';
+    usuarioID = this.user.id;
+    tamano = this.curso.users.length;
+
+    for (var i = 0; i < tamano; i++) {
+      if (usuarioID === this.curso.users[i].id) {
+        this.inscrito = true;
+      } else {
+        this.inscrito = false;
+      }
+    }
   },
   methods: {
     editar: function editar() {
@@ -1989,15 +2031,23 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var params = {
-        password: this.curso.password
+        id: this.curso.id,
+        password: this.password
       };
-      axios.put("/inscripcion/".concat(this.curso.id), params).then(function (res) {
-        console.log(error.response);
-        _this.modoEdicion = false;
-        var curso = res.data;
 
-        _this.$emit('actualizar', curso);
-      });
+      if (this.password === this.curso.password) {
+        axios.post('/inscripcion', params).then(function (res) {
+          console.log(error.response);
+          _this.modoEdicion = false;
+          var curso = res.data;
+
+          _this.$emit('new', curso);
+        });
+      } else {
+        alert('Contraseña incorrecta');
+        this.modoEdicion = false;
+        this.password = '';
+      }
     }
   }
 });
@@ -2389,21 +2439,30 @@ __webpack_require__.r(__webpack_exports__);
       _this.cursos = res.data;
     });
   },
+  updated: function updated() {
+    var _this2 = this;
+
+    axios.get('/inscripcion').then(function (res) {
+      _this2.cursos = res.data;
+    });
+  },
   methods: {
-    nuevoCurso: function nuevoCurso(curso) {},
+    nuevoCurso: function nuevoCurso(curso) {
+      console.log('Estoy acá');
+    },
     updateCurso: function updateCurso(index, curso) {
       this.cursos[index] = curso;
     }
   },
   computed: {
     searchUser: function searchUser() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.name === '') {
         return this.usuarios;
       } else {
         return this.usuarios.filter(function (usuario) {
-          return usuario.name.toLowerCase().includes(_this2.name.toLowerCase()) || usuario.email.toLowerCase().includes(_this2.name.toLowerCase()) || usuario.roles[0].nombre.toLowerCase().includes(_this2.name.toLowerCase());
+          return usuario.name.toLowerCase().includes(_this3.name.toLowerCase()) || usuario.email.toLowerCase().includes(_this3.name.toLowerCase()) || usuario.roles[0].nombre.toLowerCase().includes(_this3.name.toLowerCase());
         });
       }
     }
@@ -39664,66 +39723,115 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _vm.modoEdicion
-        ? _c("div", { staticClass: "card-body" }, [
-            _c("h5", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(_vm.curso.nombre))
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(_vm.curso.description))
-            ]),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "password" } }, [_vm._v("Contraseña")]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
+      _vm.inscrito
+        ? _c("div", [
+            _c("div", { staticClass: "card-body" }, [
+              _c("h5", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(_vm.curso.nombre))
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                attrs: { type: "hidden" },
+                domProps: { value: _vm.user.id }
+              }),
+              _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v(_vm._s(_vm.curso.description))
+              ]),
+              _vm._v(" "),
+              _c(
+                "a",
                 {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.password,
-                  expression: "password"
-                }
-              ],
-              staticClass: "form-control",
-              attrs: { type: "password" },
-              domProps: { value: _vm.password },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.password = $event.target.value
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", on: { click: _vm.inscribir } },
-              [_vm._v("Inscribir curso")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-danger", on: { click: _vm.cancelar } },
-              [_vm._v("Cancelar")]
-            )
+                  staticClass: "btn btn-success",
+                  attrs: { href: "/vistageneral/" + _vm.curso.id }
+                },
+                [_vm._v("Entrar al curso")]
+              )
+            ])
           ])
-        : _c("div", { staticClass: "card-body" }, [
-            _c("h5", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(_vm.curso.nombre))
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(_vm.curso.description))
-            ]),
-            _vm._v(" "),
-            _c(
-              "button",
-              { staticClass: "btn btn-primary", on: { click: _vm.editar } },
-              [_vm._v("Inscribirse")]
-            )
+        : _c("div", [
+            _vm.modoEdicion
+              ? _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(_vm.curso.nombre))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text" }, [
+                    _vm._v(_vm._s(_vm.curso.description))
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "hidden" },
+                    domProps: { value: _vm.curso.id }
+                  }),
+                  _vm._v(" "),
+                  _c("label", { attrs: { for: "password" } }, [
+                    _vm._v("Contraseña")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.password,
+                        expression: "password"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "password" },
+                    domProps: { value: _vm.password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.password = $event.target.value
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: { click: _vm.inscribir }
+                    },
+                    [_vm._v("Inscribir curso")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      on: { click: _vm.cancelar }
+                    },
+                    [_vm._v("Cancelar")]
+                  )
+                ])
+              : _c("div", { staticClass: "card-body" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(_vm.curso.nombre))
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "hidden" },
+                    domProps: { value: _vm.user.id }
+                  }),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text" }, [
+                    _vm._v(_vm._s(_vm.curso.description))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: { click: _vm.editar }
+                    },
+                    [_vm._v("Inscribirse")]
+                  )
+                ])
           ])
     ])
   ])
@@ -40339,14 +40447,7 @@ var render = function() {
         return _c("curso-componente", {
           key: curso.id,
           attrs: { curso: curso },
-          on: {
-            actualizar: function($event) {
-              var i = arguments.length,
-                argsArray = Array(i)
-              while (i--) argsArray[i] = arguments[i]
-              return _vm.updateCurso.apply(void 0, [index].concat(argsArray))
-            }
-          }
+          on: { new: _vm.nuevoCurso }
         })
       }),
       1

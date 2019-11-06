@@ -42,4 +42,6 @@ Route::post('inscribir', 'HomeController@inscribirse')->name('inscribirse');
 
 Route::get('/search', 'HomeController@search')->name('home.search');
 
+Route::get('vistageneral/{id}', 'GeneralController@show')->name('vistaCurso');
+
 //Route::resource('/usuario', 'RolUserController@update')->name('roluser');

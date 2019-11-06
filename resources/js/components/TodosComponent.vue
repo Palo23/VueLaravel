@@ -6,7 +6,7 @@
         v-for="(curso, index) in cursos"
         :key="curso.id"
         :curso="curso"
-        @actualizar="updateCurso(index, ...arguments)"
+        @new="nuevoCurso"
     ></curso-componente>
 </div>
 </div>
@@ -30,8 +30,15 @@ export default {
             this.cursos = res.data;
         });
     },
+    updated() {
+        axios.get('/inscripcion')
+        .then((res) => {
+            this.cursos = res.data;
+        });
+    },
     methods: {
         nuevoCurso(curso){
+            console.log('Estoy acá');
         },
         updateCurso(index, curso){
             this.cursos[index] = curso;

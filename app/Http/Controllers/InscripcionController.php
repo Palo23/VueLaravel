@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cursos;
+use App\User;
 use App\Archivos;
 use \Auth;
 
@@ -14,9 +15,15 @@ class InscripcionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        return Cursos::with('archivo')->get();
+        return Cursos::with('archivo', 'users')->get();
     }
 
     /**
@@ -60,7 +67,7 @@ class InscripcionController extends Controller
 
         if ($pass === $passIngresada) {
             $usuario->cursos()->attach($id);
-            //return view('cursos.vistaGeneral', compact('$curso'));
+            //return view('cursos.vistaGeneral', compact('curso'));
         }
     }
 

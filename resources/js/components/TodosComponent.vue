@@ -32,10 +32,8 @@ export default {
     },
     methods: {
         nuevoCurso(curso){
-            console.log('Llegó aquí');
         },
         updateCurso(index, curso){
-            console.log('Llegó aquí');
             this.cursos[index] = curso;
         },
     },

@@ -1992,6 +1992,7 @@ __webpack_require__.r(__webpack_exports__);
         password: this.curso.password
       };
       axios.put("/inscripcion/".concat(this.curso.id), params).then(function (res) {
+        console.log(error.response);
         _this.modoEdicion = false;
         var curso = res.data;
 
@@ -2305,6 +2306,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['modal'],
   data: function data() {
@@ -2387,11 +2390,8 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    nuevoCurso: function nuevoCurso(curso) {
-      console.log('Llegó aquí');
-    },
+    nuevoCurso: function nuevoCurso(curso) {},
     updateCurso: function updateCurso(index, curso) {
-      console.log('Llegó aquí');
       this.cursos[index] = curso;
     }
   },
@@ -40265,24 +40265,26 @@ var render = function() {
         _c(
           "tbody",
           _vm._l(_vm.searchUser, function(usuario, index) {
-            return _c("datos-componente", {
-              key: usuario.id,
-              attrs: { usuario: usuario },
-              on: {
-                actualizar: function($event) {
-                  var i = arguments.length,
-                    argsArray = Array(i)
-                  while (i--) argsArray[i] = arguments[i]
-                  return _vm.updateUsuario.apply(
-                    void 0,
-                    [index].concat(argsArray)
-                  )
-                },
-                borrar: function($event) {
-                  return _vm.borrarUsuario(index)
-                }
-              }
-            })
+            return _vm.isAuthenticated
+              ? _c("datos-componente", {
+                  key: usuario.id,
+                  attrs: { usuario: usuario },
+                  on: {
+                    actualizar: function($event) {
+                      var i = arguments.length,
+                        argsArray = Array(i)
+                      while (i--) argsArray[i] = arguments[i]
+                      return _vm.updateUsuario.apply(
+                        void 0,
+                        [index].concat(argsArray)
+                      )
+                    },
+                    borrar: function($event) {
+                      return _vm.borrarUsuario(index)
+                    }
+                  }
+                })
+              : _vm._e()
           }),
           1
         )
@@ -52651,9 +52653,13 @@ module.exports = function(module) {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_auth__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mixins/auth */ "./resources/js/mixins/auth.js");
+/* harmony import */ var _mixins_auth__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_mixins_auth__WEBPACK_IMPORTED_MODULE_0__);
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -52688,6 +52694,8 @@ Vue.component('curso-componente', __webpack_require__(/*! ./components/CursoComp
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+
+Vue.mixin(_mixins_auth__WEBPACK_IMPORTED_MODULE_0___default.a);
 var app = new Vue({
   el: '#app'
 });
@@ -53288,6 +53296,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UserComponent_vue_vue_type_template_id_7f050fd2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/mixins/auth.js":
+/*!*************************************!*\
+  !*** ./resources/js/mixins/auth.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var _user = document.head.querySelector('meta[name="user"]');
+
+module.exports = {
+  computed: {
+    user: function user() {
+      return JSON.parse(_user.content);
+    },
+    isAuthenticated: function isAuthenticated() {
+      return !!_user.content;
+    }
+  }
+};
 
 /***/ }),
 

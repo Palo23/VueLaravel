@@ -35,6 +35,10 @@ Vue.component('curso-componente', require('./components/CursoComponent.vue').def
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import auth from './mixins/auth';
+
+Vue.mixin(auth);
+
 const app = new Vue({
     el: '#app',
 });

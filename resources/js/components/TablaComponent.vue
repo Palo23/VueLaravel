@@ -15,6 +15,7 @@
                             </thead>
                             <tbody>
                                 <datos-componente
+                                    v-if="isAuthenticated"
                                     v-for="(usuario, index) in searchUser"
                                     :key="usuario.id"
                                     :usuario="usuario"
@@ -25,9 +26,11 @@
                              </tbody>
                          </table>  
 
-</div>                              
+</div>    
+
 </template>
 <script>
+
 export default {
     props: ['modal'],
     data() {
@@ -64,7 +67,7 @@ export default {
                 usuario.roles[0].nombre.toLowerCase().includes(this.name.toLowerCase());
 				});
 			}
-		}
+		},
 	}
 }
 </script>

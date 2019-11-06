@@ -45,6 +45,7 @@ export default {
                     password: this.curso.password
                 };
                 axios.put(`/inscripcion/${this.curso.id}`, params).then((res) => {
+                    console.log(error.response);
                     this.modoEdicion = false;
                     const curso = res.data;
                     this.$emit('actualizar', curso)

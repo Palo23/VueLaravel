@@ -14,6 +14,11 @@ class CursoProfesorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     private $profilePicturesFolder = "files";
 
     public function index()

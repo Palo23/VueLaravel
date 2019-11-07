@@ -18,7 +18,7 @@
                                             </div>
                                             <div v-else>
                                                 <button class="btn btn-primary" type="submit" @click="editar">Editar</button>
-                                                <button class="btn btn-danger" type="submit" @click="modalDelUser">Eliminar</button>
+                                                <button class="btn btn-secondary" type="submit" @click="modalDelUser">Eliminar</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -33,10 +33,10 @@
         </button>
       </div>
       <div class="modal-body">
-        ¿Seguro que deseás eliminar?
+        ¿Seguro que deseás eliminar? | {{this.toDeleteUserId}}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="delUser">Confirm</button>
+        <button type="button" class="btn btn-primary" @click="delUser">Confirmar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -76,12 +76,12 @@
                 })
             },
             modalDelUser(){
-                this.toDeleteUserId = this.usuario.name;
-                console.log('toDeleteUserId', this.toDeleteUserId);
+                this.toDeleteUserId = this.usuario.id;
                 $('#exampleModal').modal({});
             },
             delUser() {
-                axios.delete(`usuarios/${this.usuario.id}`).then((res) => {
+                console.log('toDeleteUserId', this.toDeleteUserId);
+                axios.delete(`usuarios/${this.toDeleteUserId}`).then((res) => {
                     $('#exampleModal').modal('hide');
                     this.$emit('borrar');
                 });

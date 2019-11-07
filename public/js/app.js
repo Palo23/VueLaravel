@@ -1975,6 +1975,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['curso'],
   data: function data() {
@@ -1992,20 +2016,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    var tamano = '';
-    var usuarioID = '';
-    usuarioID = this.user.id;
-    tamano = this.curso.users.length;
-
-    for (var i = 0; i < tamano; i++) {
-      if (usuarioID === this.curso.users[i].id) {
-        this.inscrito = true;
-      } else {
-        this.inscrito = false;
-      }
-    }
-  },
-  updated: function updated() {
     var tamano = '';
     var usuarioID = '';
     usuarioID = this.user.id;
@@ -2043,8 +2053,9 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$emit('new', curso);
         });
+        this.inscrito = true;
       } else {
-        alert('Contraseña incorrecta');
+        $('#errorPass').modal({});
         this.modoEdicion = false;
         this.password = '';
       }
@@ -2147,14 +2158,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     modalDelUser: function modalDelUser() {
-      this.toDeleteUserId = this.usuario.name;
-      console.log('toDeleteUserId', this.toDeleteUserId);
+      this.toDeleteUserId = this.usuario.id;
       $('#exampleModal').modal({});
     },
     delUser: function delUser() {
       var _this2 = this;
 
-      axios["delete"]("usuarios/".concat(this.usuario.id)).then(function (res) {
+      console.log('toDeleteUserId', this.toDeleteUserId);
+      axios["delete"]("usuarios/".concat(this.toDeleteUserId)).then(function (res) {
         $('#exampleModal').modal('hide');
 
         _this2.$emit('borrar');
@@ -2238,7 +2249,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     modalDelUser: function modalDelUser() {
-      this.toDeleteUserId = this.usuario.name;
+      this.toDeleteUserId = this.usuario.id;
       console.log('toDeleteUserId', this.toDeleteUserId);
       $('#exampleModal').modal({});
     },
@@ -2284,13 +2295,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       nombre: '',
       descripcion: '',
       password: '',
-      foto: ''
+      foto: '',
+      error: false
     };
   },
   methods: {
@@ -2307,11 +2320,19 @@ __webpack_require__.r(__webpack_exports__);
         descripcion: this.descripcion,
         password: this.password
       };
-      this.nombre = '', this.descripcion = '', this.password = '', axios.post('/cursosCreacion', params).then(function (res) {
-        var nuevoCurso = res.data;
 
-        _this.$emit('new', nuevoCurso);
-      });
+      if (this.nombre == '' || this.descripcion == '' || this.password == '') {
+        this.error = true;
+        this.nombre = '';
+        this.descripcion = '';
+        this.password = '';
+      } else {
+        this.nombre = '', this.descripcion = '', this.password = '', axios.post('/cursosCreacion', params).then(function (res) {
+          var nuevoCurso = res.data;
+
+          _this.$emit('new', nuevoCurso);
+        });
+      }
     }
   }
 });
@@ -2439,16 +2460,13 @@ __webpack_require__.r(__webpack_exports__);
       _this.cursos = res.data;
     });
   },
-  updated: function updated() {
-    var _this2 = this;
-
-    axios.get('/inscripcion').then(function (res) {
-      _this2.cursos = res.data;
-    });
-  },
   methods: {
     nuevoCurso: function nuevoCurso(curso) {
-      console.log('Estoy acá');
+      var _this2 = this;
+
+      axios.get('/inscripcion').then(function (res) {
+        _this2.cursos = res.data;
+      });
     },
     updateCurso: function updateCurso(index, curso) {
       this.cursos[index] = curso;
@@ -39739,6 +39757,10 @@ var render = function() {
                 _vm._v(_vm._s(_vm.curso.description))
               ]),
               _vm._v(" "),
+              _c("p", { staticClass: "card-text" }, [
+                _vm._v("Profesor: " + _vm._s(_vm.curso.profesor.name))
+              ]),
+              _vm._v(" "),
               _c(
                 "a",
                 {
@@ -39758,6 +39780,10 @@ var render = function() {
                   _vm._v(" "),
                   _c("p", { staticClass: "card-text" }, [
                     _vm._v(_vm._s(_vm.curso.description))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text" }, [
+                    _vm._v("Profesor:  " + _vm._s(_vm.curso.profesor.name))
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -39791,6 +39817,8 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
                   _c(
                     "button",
                     {
@@ -39823,6 +39851,10 @@ var render = function() {
                     _vm._v(_vm._s(_vm.curso.description))
                   ]),
                   _vm._v(" "),
+                  _c("p", { staticClass: "card-text" }, [
+                    _vm._v("Profesor: " + _vm._s(_vm.curso.profesor.name))
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "button",
                     {
@@ -39833,10 +39865,83 @@ var render = function() {
                   )
                 ])
           ])
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "errorPass",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "errorPassLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" }
+                  },
+                  [_vm._v("Error")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("p", [_vm._v("Contraseña incorrecta")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Aceptar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -39958,7 +40063,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-danger",
+                      staticClass: "btn btn-secondary",
                       attrs: { type: "submit" },
                       on: { click: _vm.modalDelUser }
                     },
@@ -39991,7 +40096,11 @@ var render = function() {
               _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
-                _vm._v("\n        ¿Seguro que deseás eliminar?\n      ")
+                _vm._v(
+                  "\n        ¿Seguro que deseás eliminar? | " +
+                    _vm._s(this.toDeleteUserId) +
+                    "\n      "
+                )
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "modal-footer" }, [
@@ -40002,7 +40111,7 @@ var render = function() {
                     attrs: { type: "button" },
                     on: { click: _vm.delUser }
                   },
-                  [_vm._v("Confirm")]
+                  [_vm._v("Confirmar")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -40169,7 +40278,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "btn btn-danger",
+                      staticClass: "btn btn-secondary",
                       attrs: { type: "submit" },
                       on: { click: _vm.modalDelUser }
                     },
@@ -40232,7 +40341,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "text", name: "nombre" },
+            attrs: { type: "text", name: "nombre", maxlength: "25" },
             domProps: { value: _vm.nombre },
             on: {
               input: function($event) {
@@ -40258,7 +40367,7 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "text", name: "descripcion" },
+            attrs: { type: "text", name: "descripcion", maxlength: "100" },
             domProps: { value: _vm.descripcion },
             on: {
               input: function($event) {
@@ -40292,7 +40401,13 @@ var render = function() {
                 _vm.password = $event.target.value
               }
             }
-          })
+          }),
+          _vm._v(" "),
+          _vm.error
+            ? _c("label", { staticClass: "text-danger" }, [
+                _vm._v("*Debes ingresar todos los campos")
+              ])
+            : _vm._e()
         ]),
         _vm._v(" "),
         _c(

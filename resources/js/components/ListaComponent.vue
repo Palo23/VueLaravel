@@ -18,7 +18,7 @@
                                             </div>
                                             <div v-else>
                                                 <button class="btn btn-primary" type="submit" @click="editar">Editar</button>
-                                                <button class="btn btn-danger" type="submit" @click="modalDelUser">Eliminar</button>
+                                                <button class="btn btn-secondary" type="submit" @click="modalDelUser">Eliminar</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -55,7 +55,7 @@ export default {
                 })
             },
             modalDelUser(){
-                this.toDeleteUserId = this.usuario.name;
+                this.toDeleteUserId = this.usuario.id;
                 console.log('toDeleteUserId', this.toDeleteUserId);
                 $('#exampleModal').modal({});
             },

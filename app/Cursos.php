@@ -18,4 +18,11 @@ class Cursos extends Model
         ->belongsToMany('App\User')
         ->withTimestamps();
     }
+
+    public function profesor()
+    {
+        return $this
+        ->belongsTo('App\User', 'id_user');
+    }
+
 }

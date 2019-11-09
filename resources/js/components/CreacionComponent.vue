@@ -25,11 +25,13 @@
                                     v-for="(curso, index) in cursos"
                                     :key="curso.id"
                                     :curso="curso"
+                                    @actualizar="updateCurso(index, ...arguments)"
+                                    @borrar="borrarCurso(index)"
                                 ></lista-componente>
                              </tbody>
                          </table>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -71,19 +73,28 @@ export default {
             this.cursos = res.data;
         });
     },
-    updated(){
-        this.nombreCurso = '';
+    methods: {
+        modalCrear(){
+                $('#crearModal').modal({});
+            },
+        agregarCurso(nuevoCurso){
+            $('#exampleModal').modal('hide');
+        },
+        updateCurso(index, curso){
+            this.cursos[index] = curso;
+            this.nombreCurso = '';
         axios.get('/cursosCreacion')
         .then((res) => {
             this.cursos = res.data;
         });
-    },
-    methods: {
-        modalCrear(){
-                $('#exampleModal').modal({});
-            },
-        agregarCurso(nuevoCurso){
-            $('#exampleModal').modal('hide');
+        },
+        borrarCurso(index, curso){
+            this.cursos.splice(index, 1);
+            this.nombreCurso = '';
+            axios.get('/cursosCreacion')
+            .then((res) => {
+            this.cursos = res.data;
+            });
         },
     }
 }

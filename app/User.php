@@ -22,6 +22,14 @@ class User extends Authenticatable
         ->withTimestamps();
     }
 
+    public function hasCurso($curso)
+{
+    if ($this->cursos()->where('cursos_id', $curso)->first()) {
+        return true;
+    }
+    return false;
+}
+
     public function roles()
     {
         return $this

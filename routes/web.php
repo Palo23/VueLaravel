@@ -28,7 +28,7 @@ Route::get('/asignar', 'RolController@asignar')->name('roles.asignar');
 
 Route::get('/perfil/{id}', 'PerfilController@mostrarPerfil')->name('perfil');
 
-Route::post('update_foto', 'PerfilController@actualizarFoto')->name('actualizarFoto');
+Route::post('update_foto', 'PerfilController@actualizarFoto')->name('actualizarFotoCurso');
 
 Route::apiResource('usuarios', 'UsuariosController');
 
@@ -43,5 +43,10 @@ Route::post('inscribir', 'HomeController@inscribirse')->name('inscribirse');
 Route::get('/search', 'HomeController@search')->name('home.search');
 
 Route::get('vistageneral/{id}', 'GeneralController@show')->name('vistaCurso');
+
+Route::get('/editarCurso/{id}', 'EditarCursoController@show')->name('edicion');
+
+Route::post('update_cursoph/{id}', 'EditarCursoController@actualizarFotoCurso')->name('actualizarFotoCurso');
+
 
 //Route::resource('/usuario', 'RolUserController@update')->name('roluser');

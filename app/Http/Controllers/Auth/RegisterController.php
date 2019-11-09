@@ -29,7 +29,6 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -75,6 +74,5 @@ class RegisterController extends Controller
         $rol = Roles::where('id', $data['rol'])->first();
         $user->roles()->attach($rol->id);
         return $user;
-        return back()->with('mensaje', 'Registrado Correctamente');
     }
 }

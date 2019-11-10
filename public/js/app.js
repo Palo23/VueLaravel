@@ -1938,6 +1938,19 @@ __webpack_require__.r(__webpack_exports__);
         _this3.cursos = res.data;
       });
     }
+  },
+  computed: {
+    searchCurso: function searchCurso() {
+      var _this4 = this;
+
+      if (this.nombreCurso === '') {
+        return this.cursos;
+      } else {
+        return this.cursos.filter(function (curso) {
+          return curso.nombre.toLowerCase().includes(_this4.nombreCurso.toLowerCase()) || curso.description.toLowerCase().includes(_this4.nombreCurso.toLowerCase());
+        });
+      }
+    }
   }
 });
 
@@ -2133,6 +2146,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['usuario'],
   data: function data() {
@@ -2171,17 +2186,36 @@ __webpack_require__.r(__webpack_exports__);
     },
     modalDelUser: function modalDelUser() {
       this.toDeleteUserId = this.usuario.id;
-      $('#exampleModal').modal({});
+      var usuarioID = this.user.id;
+      console.log(usuarioID);
+      $('#exampleModal').modal(function () {
+        var idUs = this.usuario.id;
+        console.log(idUs);
+        var modal = $(this);
+        modal.find('#deleteForm input').val(idUs);
+      });
     },
     delUser: function delUser() {
       var _this2 = this;
 
-      console.log('toDeleteUserId', this.toDeleteUserId);
-      axios["delete"]("usuarios/".concat(this.toDeleteUserId)).then(function (res) {
-        $('#exampleModal').modal('hide');
+      var usuarioID = this.user.id;
+      idUser = id;
 
-        _this2.$emit('borrar');
-      });
+      if (idUser === '') {
+        alert("No existe");
+      }
+
+      console.log('toDeleteUserId', idUser);
+
+      if (usuarioID === this.usuario.id) {
+        alert("No puedes eliminar al usuario actual");
+      } else {
+        axios["delete"]("usuarios/".concat(this.usuario.id)).then(function (res) {
+          $('#exampleModal').modal('hide');
+
+          _this2.$emit('borrar');
+        });
+      }
     }
   }
 });
@@ -2246,6 +2280,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['curso'],
   data: function data() {
@@ -2260,7 +2297,8 @@ __webpack_require__.r(__webpack_exports__);
       modoEliminar: false,
       toDeleteCursoId: '',
       nombre: '',
-      descripcion: ''
+      descripcion: '',
+      error: false
     };
   },
   methods: {
@@ -2332,6 +2370,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2359,6 +2400,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.nombre == '' || this.descripcion == '' || this.password == '') {
         this.error = true;
+        $('.alert').fadeIn();
+        setTimeout(function () {
+          $(".alert").fadeOut();
+        }, 2000);
         this.nombre = '';
         this.descripcion = '';
         this.password = '';
@@ -39594,7 +39639,39 @@ var render = function() {
             "card-header d-flex justify-content-between align-items-center"
         },
         [
-          _vm._m(0),
+          _c(
+            "div",
+            {
+              staticClass: "col-sm-12 col-md-4 hidden-sm hidden-xs",
+              staticStyle: { "border-radius": "2px", "padding-bottom": "2px" },
+              attrs: { id: "busqueda" }
+            },
+            [
+              _c("h2", [_vm._v("Buscar curso")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.nombreCurso,
+                    expression: "nombreCurso"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Buscar" },
+                domProps: { value: _vm.nombreCurso },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.nombreCurso = $event.target.value
+                  }
+                }
+              })
+            ]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -39615,11 +39692,11 @@ var render = function() {
         staticStyle: { "table-layout": "fixed", width: "100%" }
       },
       [
-        _vm._m(1),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "tbody",
-          _vm._l(_vm.cursos, function(curso, index) {
+          _vm._l(_vm.searchCurso, function(curso, index) {
             return _c("lista-componente", {
               key: curso.id,
               attrs: { curso: curso },
@@ -39662,7 +39739,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "div",
@@ -39671,7 +39748,7 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _vm._m(3)
+              _vm._m(2)
             ])
           ]
         )
@@ -39680,27 +39757,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-sm-12 col-md-4 hidden-sm hidden-xs",
-        staticStyle: { "border-radius": "2px", "padding-bottom": "2px" },
-        attrs: { id: "busqueda" }
-      },
-      [
-        _c("h2", [_vm._v("Buscar curso")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Buscar" }
-        })
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -40023,6 +40079,16 @@ var render = function() {
       [
         _c("tr", [
           _c("th", [
+            _c("input", {
+              attrs: { type: "hidden" },
+              domProps: { value: _vm.user.id }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              attrs: { type: "hidden" },
+              domProps: { value: _vm.usuario.id }
+            }),
+            _vm._v(" "),
             _vm.modoEdicion
               ? _c("input", {
                   directives: [
@@ -40115,7 +40181,11 @@ var render = function() {
                     {
                       staticClass: "btn btn-secondary",
                       attrs: { type: "submit" },
-                      on: { click: _vm.modalDelUser }
+                      on: {
+                        click: function($event) {
+                          return _vm.modalDelUser(_vm.usuario.id)
+                        }
+                      }
                     },
                     [_vm._v("Eliminar")]
                   )
@@ -40236,6 +40306,17 @@ var render = function() {
         staticStyle: { "table-layout": "fixed", width: "400%" }
       },
       [
+        _vm.error
+          ? _c(
+              "div",
+              {
+                staticClass: "alert alert-danger alert-dismissible fade show",
+                attrs: { role: "alert" }
+              },
+              [_c("strong", [_vm._v("No se cambió ningún campo")])]
+            )
+          : _vm._e(),
+        _vm._v(" "),
         _c("tr", [
           _c("th", [
             _vm.modoEdicion
@@ -40549,10 +40630,17 @@ var render = function() {
             }
           }),
           _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
           _vm.error
-            ? _c("label", { staticClass: "text-danger" }, [
-                _vm._v("*Debes ingresar todos los campos")
-              ])
+            ? _c(
+                "div",
+                {
+                  staticClass: "alert alert-danger alert-dismissible fade show",
+                  attrs: { role: "alert" }
+                },
+                [_c("strong", [_vm._v("*Debes llenar todos los campos")])]
+              )
             : _vm._e()
         ]),
         _vm._v(" "),

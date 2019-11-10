@@ -1,6 +1,9 @@
 <template>
                                 <div>
                                     <table style="table-layout: fixed; width: 400%;" class="table">
+                                        <div v-if="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <strong>No se cambió ningún campo</strong>
+                                        </div>
                                     <tr>
                                         <th>
                                         <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="curso.nombre">
@@ -57,7 +60,8 @@ export default {
                 modoEliminar: false,
                 toDeleteCursoId: '',
                 nombre: '',
-                descripcion: ''
+                descripcion: '',
+                error: false
             }
         },
         methods: {

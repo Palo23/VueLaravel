@@ -3,6 +3,8 @@
                                     <table style="table-layout: fixed; width: 400%;" class="table">
                                     <tr>
                                         <th>
+                                        <input type="hidden" :value="user.id">
+                                        <input type="hidden" :value="usuario.id">
                                         <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.name">
                                         <p v-else>{{usuario.name}}</p>
                                         </th>
@@ -18,7 +20,7 @@
                                             </div>
                                             <div v-else>
                                                 <button class="btn btn-primary" type="submit" @click="editar">Editar</button>
-                                                <button class="btn btn-secondary" type="submit" @click="modalDelUser">Eliminar</button>
+                                                <button class="btn btn-secondary" type="submit" @click="modalDelUser(usuario.id)">Eliminar</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -77,14 +79,32 @@
             },
             modalDelUser(){
                 this.toDeleteUserId = this.usuario.id;
-                $('#exampleModal').modal({});
+                var usuarioID = this.user.id;
+                console.log(usuarioID)
+                $('#exampleModal').modal(function() {
+                    var idUs = this.usuario.id
+                    console.log(idUs)
+                    var modal = $(this)
+                    modal.find('#deleteForm input').val(idUs)
+                });
             },
+
             delUser() {
-                console.log('toDeleteUserId', this.toDeleteUserId);
-                axios.delete(`usuarios/${this.toDeleteUserId}`).then((res) => {
+                var usuarioID = this.user.id;
+                idUser = id;
+                if (idUser === '') {
+                    alert("No existe")
+                }
+                console.log('toDeleteUserId', idUser);
+                if(usuarioID === this.usuario.id){
+                    alert("No puedes eliminar al usuario actual")
+                }else{
+                    axios.delete(`usuarios/${this.usuario.id}`).then((res) => {
                     $('#exampleModal').modal('hide');
                     this.$emit('borrar');
-                });
+                })
+                }
+                
             }
         },
     }

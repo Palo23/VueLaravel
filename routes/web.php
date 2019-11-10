@@ -28,7 +28,7 @@ Route::get('/asignar', 'RolController@asignar')->name('roles.asignar');
 
 Route::get('/perfil/{id}', 'PerfilController@mostrarPerfil')->name('perfil');
 
-Route::post('update_foto', 'PerfilController@actualizarFoto')->name('actualizarFotoCurso');
+Route::post('update_foto', 'PerfilController@actualizarFoto')->name('actualizarFoto');
 
 Route::apiResource('usuarios', 'UsuariosController');
 

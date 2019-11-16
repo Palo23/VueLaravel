@@ -20,7 +20,7 @@
                                     :key="usuario.id"
                                     :usuario="usuario"
                                     @actualizar="updateUsuario(index, ...arguments)"
-                                    @borrar="borrarUsuario(index)"
+                                    @delete="borrarUsuario(index)"
                                 >
                                 </datos-componente>
                              </tbody>
@@ -45,15 +45,30 @@ export default {
         this.name = '';
         axios.get('/usuarios')
         .then((res) => {
-            this.usuarios = res.data;
+            this.usuarios = res.data; 
         });
     },
+
     methods: {
         updateUsuario(index, usuario){
             this.usuarios[index] = usuario;
+            this.$swal({
+                            title: 'Modificado',
+                            text: 'El usuario fue modificado exitosamente',
+                            type: 'success'
+                                });
         },
-        borrarUsuario(index, usuario){
-            this.usuarios.splice(index, 1);
+        borrarUsuario(index){
+            this.usuarios.splice(index, 1)
+            axios.get('/usuarios')
+            .then((res) => {
+            this.usuarios = res.data; 
+            });
+            this.$swal({
+                            title: 'Eliminado',
+                            text: 'El usuario fue eliminado exitosamente',
+                            type: 'error'
+                                });
         },
     },
     computed:{

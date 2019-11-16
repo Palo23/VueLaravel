@@ -74,6 +74,5 @@ class RegisterController extends Controller
         $rol = Roles::where('id', $data['rol'])->first();
         $user->roles()->attach($rol->id);
         return $user;
-        return Redirect::to('/register')->with('mensaje', 'Guardado con exito');
     }
 }

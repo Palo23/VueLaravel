@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Cursos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Archivos;
+use App\Publicaciones;
+use App\Http\Requests\UploadFile;
+use Illuminate\Support\Str;
 
 class GeneralController extends Controller
 {
@@ -18,6 +23,8 @@ class GeneralController extends Controller
     {
         $this->middleware('auth');
     }
+
+    private $profilePicturesFolder = "files";
 
     public function index()
     {
@@ -53,20 +60,31 @@ class GeneralController extends Controller
      */
     public function show($id)
     {
-        $curso = Cursos::find($id);
+        $cursos = Cursos::find($id);
         $idUser = Auth::user()->id;
-        $profesorCurso = $curso->id_user;
+        $profesorCurso = $cursos->id_user;
 
         if ((Auth::user()->hasCurso($id)) || ($idUser === $profesorCurso) ) {
             if (Auth::user()->hasRole("Alumno")) {
-                return view('cursos.vistaGeneral', compact('curso'));
+                return view('cursos.vistaGeneral', compact('cursos'));
             }elseif (Auth::user()->hasRole("Profesor")) {
-                return view('cursos.vistaProfesor', compact('curso'));
+                $usuarioID = Auth::user()->id;
+                $usuario = User::find($usuarioID);
+                $curso = Cursos::where('id', $id)->with('users')->first();
+                $inscritos = $curso->users;
+                $cursoID = $curso->id_user;
+                    if ($usuarioID === $cursoID) {
+                        $archivo = $curso->ID_archivo;
+                        $foto = Archivos::find($archivo);
+                        return view('cursos.vistaProfesor', compact('curso', 'foto', 'usuario', 'inscritos'));
+                    }else {
+                        return back();
+                    }
             }
             
-        }else{
-            return back();
-        }
+            }else{
+                return back();
+            }
     }
 
     /**
@@ -102,4 +120,40 @@ class GeneralController extends Controller
     {
         //
     }
+
+    public function subirArchivo(Request $request) 
+    {
+
+        if ($request->hasFile('file-cur')) {
+            $archivo = $request->file('file-cur');
+        $nombreArchivo = Str::random(10) . '.' .$archivo->getClientOriginalExtension();
+        
+        $foto = new Archivos;
+        $foto->ruta = "/files" . '/' . $nombreArchivo;
+        $foto->nombre = $nombreArchivo;
+        $foto->save();
+        $cursoID = $request->idCurso;
+        $archivo->move($this->profilePicturesFolder,$nombreArchivo);// subimos al servidor
+        $publicacion = new Publicaciones;
+        $publicacion->tema = $request->titulo;
+        $publicacion->descripcion = $request->descripcion;
+        $publicacion->save();
+
+        $publicacion->miCurso()->attach($cursoID);
+        $publicacion->archivosPub()->attach($foto->id);
+        
+        return redirect()->route('vistaCurso', ['id' => $cursoID]);
+        }else{
+            $cursoID = $request->idCurso;
+            $publicacion = new Publicaciones;
+            $publicacion->tema = $request->titulo;
+            $publicacion->descripcion = $request->descripcion;
+            $publicacion->save();
+
+            $publicacion->miCurso()->attach($cursoID);
+            return redirect()->route('vistaCurso', ['id' => $cursoID]);
+        }
+        
+    }
+
 }

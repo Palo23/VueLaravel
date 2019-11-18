@@ -8,6 +8,13 @@ class Archivos extends Model
 {
     public function curso()
     {
-        return $this->hasMany('App\Cursos');
+        return $this->belongsToMany('App\Cursos')
+        ->withTimestamps();
+    }
+
+    public function publica()
+    {
+        return $this->belongsToMany('App\Publicaciones')
+        ->withTimestamps();
     }
 }

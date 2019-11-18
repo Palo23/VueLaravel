@@ -80,7 +80,9 @@ export default {
                                         Vue.swal({
                                             title: "Eliminado", 
                                             text: "El curso ha sido eliminado", 
-                                            type: "success"}).then(function(){ 
+                                            type: "success",
+                                            allowEscapeKey: false,
+                                            allowOutsideClick: false}).then(function(){ 
                                             location.reload();
                                             });
                                     });

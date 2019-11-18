@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Cursos;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Archivos;
-use \Auth;
+use App\DB;
 
-class InscripcionController extends Controller
+class MisCursosController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,10 +40,7 @@ class InscripcionController extends Controller
      */
     public function store(Request $request)
     {
-        $idUsuario = Auth::user()->id;
-        $usuario = User::find($idUsuario);
-        $idCurso = $request->id;
-        $usuario->cursos()->attach($idCurso);
+        //
     }
 
     /**
@@ -66,7 +63,7 @@ class InscripcionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        //
     }
 
     /**

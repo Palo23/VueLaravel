@@ -17,4 +17,13 @@ class Archivos extends Model
         return $this->belongsToMany('App\Publicaciones')
         ->withTimestamps();
     }
+
+    public function hasPublicacion($publicacion)
+    {
+    if ($this->publica()->where('publicacion_id', $publicacion)->first()) {
+        return true;
+    }
+    return false;
+    }
+
 }

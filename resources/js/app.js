@@ -30,6 +30,7 @@ Vue.component('todos-componente', require('./components/TodosComponent.vue').def
 Vue.component('curso-componente', require('./components/CursoComponent.vue').default);
 Vue.component('miscursos-componente', require('./components/MisCursosComponent.vue').default);
 Vue.component('mios-componente', require('./components/MiosComponent.vue').default);
+Vue.component('publicacion-componente', require('./components/EditarPublicacionComponent.vue').default);
 
 
 /**

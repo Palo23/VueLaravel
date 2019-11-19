@@ -6,8 +6,14 @@
         <div class="col-md-6 offset-0">
                 
             <div class="container">
-                    <h5 class="card-header">{{$curso->nombre}}</h5>
-                <br>
+                <div class="card-header">
+                        <h5>{{$curso->nombre}}</h5>
+                        <a href="/home" class="btn btn-primary btn-sm">Volver a mis cursos</a>
+                    <br>
+                </div>
+                @if ( session('mensaje') )
+                    <div class="alert alert-danger">{{ session('mensaje') }}</div>
+                @endif
                     <label for=""><h3>Publicar</h3></label>
                     <form class="form-group" action="{{ route('subirArchivo') }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }}
@@ -18,7 +24,7 @@
                             <label for="">Publicación:</label>
                             <textarea class="form-control" name="descripcion" id="descripcion" placeholder="Descripción"></textarea>
                             <label for="">Archivo:</label>
-                            <input class="form-control" type="file" name="file-cur" accept=".jpg, .jpeg, .png, .doc, .docx, .pdf, .odt"> 
+                            <input class="form-control" type="file" name="file-cur" accept=".jpg, .jpeg, .png, .doc, .docx, .pdf, .odt, .pptx, video/*"> 
                         </div>
                         <div class="py-2">
                             <button type="submit" class="btn btn-primary btn-lg">Publicar</button>
@@ -29,28 +35,15 @@
             <div class="container">
                 <label for=""><h3>Publicaciones</h3></label>
                     <div class="container">
-                            <ul class="list-unstyled">
-                                    <li class="media">
-                                      <img src="..." class="mr-3" alt="...">
-                                      <div class="media-body">
-                                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                                      </div>
+                            <ul class="list-unstyled list-group list-group-flush">
+                                @foreach ($publicaciones as $publicacion)
+                                <li class="media py-1">
+                                        <div class="media-body">
+                                          <a href="{{ route('vistaPub', [$publicacion->id]) }}"><h5 class="mt-0 mb-1">{{$publicacion->tema}}</h5></a>
+                                          
+                                        </div>
                                     </li>
-                                    <li class="media my-4">
-                                      <img src="..." class="mr-3" alt="...">
-                                      <div class="media-body">
-                                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                                      </div>
-                                    </li>
-                                    <li class="media">
-                                      <img src="..." class="mr-3" alt="...">
-                                      <div class="media-body">
-                                        <h5 class="mt-0 mb-1">List-based media object</h5>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                                      </div>
-                                    </li>
+                                @endforeach
                                   </ul>
                     </div>
             </div>

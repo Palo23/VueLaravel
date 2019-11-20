@@ -20,7 +20,7 @@
                         <div>
                             <label for="">Título:</label>
                             <input type="hidden" id="idCurso" name="idCurso" value="{{$curso->id}}">
-                            <input class="form-control" type="text" name="titulo" id="titulo" placeholder="Título de la publicación">
+                            <input class="form-control" type="text" name="titulo" id="titulo" placeholder="Título de la publicación" maxlength="25">
                             <label for="">Publicación:</label>
                             <textarea class="form-control" name="descripcion" id="descripcion" placeholder="Descripción"></textarea>
                             <label for="">Archivo:</label>
@@ -38,6 +38,7 @@
                             <ul class="list-unstyled list-group list-group-flush">
                                 @foreach ($publicaciones as $publicacion)
                                 <li class="media py-1">
+                                        <img width="45" height="25" src="../files/documentos.png" class="mr-3" alt="...">
                                         <div class="media-body">
                                           <a href="{{ route('vistaPub', [$publicacion->id]) }}"><h5 class="mt-0 mb-1">{{$publicacion->tema}}</h5></a>
                                           

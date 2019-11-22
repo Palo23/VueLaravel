@@ -41,7 +41,7 @@
                                         <img width="45" height="25" src="../files/documentos.png" class="mr-3" alt="...">
                                         <div class="media-body">
                                           <a href="{{ route('vistaPub', [$publicacion->id]) }}"><h5 class="mt-0 mb-1">{{$publicacion->tema}}</h5></a>
-                                          
+                                          <p>{{$publicacion->updated_at}}</p>
                                         </div>
                                     </li>
                                 @endforeach

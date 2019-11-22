@@ -9,7 +9,7 @@
                                         <p v-else>{{usuario.name}}</p>
                                         </th>
                                         <td>
-                                            <input v-if="modoEdicion" id="" class="form-control" type="text" v-model="usuario.email">
+                                            <input v-if="modoEdicion" id="" class="form-control" type="email" v-model="usuario.email" required>
                                             <p v-else>{{usuario.email}}</p>
                                             </td>
                                         <td>{{usuario.roles[0].nombre}}</td>
@@ -54,11 +54,31 @@
                     name: this.usuario.name,
                     email: this.usuario.email
                 };
-                axios.put(`/usuarios/${this.usuario.id}`, params).then((res) => {
+
+                if (this.usuario.name === '' || this.usuario.email === '') {
+                    this.$swal({
+                            title: 'Campos vacíos',
+                            text: 'No se permiten campos vacíos al editar',
+                            type: 'error'
+                                });
+                } else if(!this.validEmail(this.usuario.email)){
+                    this.$swal({
+                            title: 'Email no válido',
+                            text: 'El correo ingresado no es válido',
+                            type: 'error'
+                                });
+                } else {
+                    axios.put(`/usuarios/${this.usuario.id}`, params).then((res) => {
                     this.modoEdicion = false;
                     const usuario = res.data;
                     this.$emit('actualizar', usuario)
                 })
+                }
+                
+            },
+            validEmail: function (email) {
+                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
             },
             modalDelUser(){
                 var id

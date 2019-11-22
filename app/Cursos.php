@@ -29,7 +29,8 @@ class Cursos extends Model
     {
         return $this
         ->belongsToMany('App\Publicaciones')
-        ->withTimestamps();
+        ->withTimestamps()
+        ->orderBy('updated_at', 'desc');
     }
 
 }
